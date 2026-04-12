@@ -12,18 +12,23 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+
+
 add_subdirectory(libs/glfw)
-
-
 add_subdirectory(libs/glm)
+add_subdirectory(libs/glew-2.3.1/build/cmake)
 
-
-add_executable(test main.cpp ${SRC}Window/Window.cpp)
+add_executable(test main.cpp ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp)
 target_link_libraries(test
     PUBLIC
     glfw
     glm::glm
     OpenGL::GL
+    glew_s
 )
 
-target_include_directories(test PUBLIC ${SRC}Window/)
+target_include_directories(test PUBLIC
+     ${SRC}Window/
+     ${SRC}EventSystem/
+     ${CMAKE_CURRENT_SOURCE_DIR}/libs/glew-2.3.1/include
+     )
