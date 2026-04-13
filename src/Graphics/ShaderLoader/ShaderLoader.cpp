@@ -1,6 +1,6 @@
 #include"ShaderLoader.hpp"
 
-ShaderLoader::ShaderLoader(const GLchar* vertexPath, const GLchar* fragmentPath)
+Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
     std::string vertexCode;
     std::string fragmentCode;
@@ -74,6 +74,19 @@ ShaderLoader::ShaderLoader(const GLchar* vertexPath, const GLchar* fragmentPath)
 
 }
 
-ShaderLoader::use(){
+Shader::~Shader(){
+    glDeleteProgram(id);
+}
+
+void Shader::use(){
     glUseProgram(id);
+}
+
+
+void Shader::setUniformMatrix4(const std::string& name, glm::mat4& matrics) const{
+    glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &matrics[0][0]);
+}
+
+GLuint Shader::getId(){
+    return id;
 }
