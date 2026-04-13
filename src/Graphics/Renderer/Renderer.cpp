@@ -73,3 +73,7 @@ void Renderer::flush(){
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(GUIVertex), vertices.data());
     glDrawElements(GL_TRIANGLES, (vertices.size() / 4) * 6, GL_UNSIGNED_INT, 0);
 }
+
+void Renderer::resize(uint16_t newWidth, uint16_t newHeight){
+    projectionMatrics = glm::ortho(0.0f, (float)newWidth, (float)newHeight, 0.0f, -1.0f, 1.0f);
+}

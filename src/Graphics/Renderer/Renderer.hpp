@@ -1,5 +1,5 @@
 #pragma once
-#include"../ShaderLoader/ShaderLoader.hpp"
+#include"ShaderLoader.hpp"
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 
@@ -34,7 +34,7 @@ class Renderer{
 
     void draw(glm::vec2 pos, glm::vec2 size, glm::vec4 color);
 
-    //void resize(uint16_t newWidth, uint16_t newHeigth);
+    void resize(uint16_t newWidth, uint16_t newHeight);
 
 
 

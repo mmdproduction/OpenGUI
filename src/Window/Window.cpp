@@ -38,9 +38,20 @@ void Window::setWindowShouldClose(bool flag){
 }
 void Window::swapBuffers(){
 	glfwSwapBuffers(window);
+	isResize = false;
+	
+	int w, h;
+	glfwGetWindowSize(window, &w, &h);
+	if(isResize = (w != width) || (h != height); isResize){
+		height = h;
+		width = w;
+		std::cout << w << " " << h << std::endl;
+	}
+	
 }
 
-
+uint16_t Window::getWidth(){ return width; }
+uint16_t Window::getHeight(){ return height; }
 
 GLFWwindow* Window::getWindow(){
 	return window;

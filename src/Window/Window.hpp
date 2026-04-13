@@ -2,6 +2,8 @@
 #include"GLFW/glfw3.h"
 #include <string>
 #include <stdexcept>
+#include<iostream>
+
 
 
 class Window{
@@ -19,12 +21,15 @@ class Window{
     Window(uint16_t w, uint16_t h, const std::string& t);
     ~Window();
 
+    bool isResize;
     static int windowInit();
     void makeContextCurrent(); 
     bool isWindowShouldClose();
     void setWindowShouldClose(bool flag);
     void swapBuffers();
     void setFramebufferSizeCallback();
+    uint16_t getWidth();
+    uint16_t getHeight();
 
 
     GLFWwindow* getWindow();

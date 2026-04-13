@@ -17,15 +17,19 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(libs/glfw)
 add_subdirectory(libs/glm)
+add_subdirectory(libs/freetype)
 add_subdirectory(libs/glew-2.3.1/build/cmake)
 
-add_executable(test main.cpp ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/Renderer.cpp)
+add_executable(test main.cpp ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp
+${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/Renderer.cpp
+ ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/TextRenderer.cpp)
 target_link_libraries(test
     PUBLIC
     glfw
     glm::glm
     OpenGL::GL
     glew_s
+    freetype
 )
 
 target_include_directories(test PUBLIC
@@ -33,4 +37,6 @@ target_include_directories(test PUBLIC
      ${SRC}EventSystem/
      ${CMAKE_CURRENT_SOURCE_DIR}/libs/glew-2.3.1/include
      ${GRAPHICS}Renderer/
+     ${GRAPHICS}ShaderLoader/
+     ${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype/include
      )
