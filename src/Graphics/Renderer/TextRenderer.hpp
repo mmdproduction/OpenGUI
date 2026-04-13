@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <string>
-#include "ShaderLoader.hpp"
+#include "../ShaderLoader/ShaderLoader.hpp"
 
 
 struct Character{
@@ -21,7 +21,17 @@ class TextRenderer{
     private:
     GLuint VAO = 0,
     VBO = 0;
-    std::map<GLchar, Character> Characters;
-
+    std::map<GLuint, Character> characters;
     Shader shader;
+
+    static std::u32string charToUnicode(const std::string& utf8);
+    void drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color, glm::mat4 projection);
+    public:
+
+    TextRenderer(const GLchar* vertexPath, const GLchar* fragmentPath);
+    ~TextRenderer();
+
+    bool loadFont(const std::string& fontPath, GLuint fontSize);
+    void drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color, glm::mat4 projection);
+
 };
