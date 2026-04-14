@@ -23,15 +23,15 @@ class TextRenderer{
     VBO = 0;
     std::map<GLuint, Character> characters;
     Shader shader;
+    glm::mat4 projection;
 
     static std::u32string charToUnicode(const std::string& utf8);
-    void drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color, glm::mat4 projection);
+    void drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color);
     public:
 
-    TextRenderer(const GLchar* vertexPath, const GLchar* fragmentPath);
+    TextRenderer(uint16_t width, uint16_t height, const GLchar* vertexPath, const GLchar* fragmentPath);
     ~TextRenderer();
 
     bool loadFont(const std::string& fontPath, GLuint fontSize);
-    void drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color, glm::mat4 projection);
-
+    void drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color);
 };

@@ -22,7 +22,7 @@ int main(void)
     if(glewInit()) return -1;
     Renderer render = Renderer(window.getWidth(), window.getHeight(), "shaders/vert.glsl", "shaders/frag.glsl");
 
-    TextRenderer textRender = TextRenderer("shaders/text_vert.glsl", "shaders/text_frag.glsl");
+    TextRenderer textRender = TextRenderer(window.getWidth(), window.getHeight(), "shaders/text_vert.glsl", "shaders/text_frag.glsl");
     if(!textRender.loadFont("C:/Windows/Fonts/arial.ttf", 64)){
         std::cerr << "ERROR::FONT::BUILD_FAIL";
     }
@@ -39,14 +39,13 @@ int main(void)
             render.resize(window.getWidth(), window.getHeight());
         }
         render.begin();
-
         
+        render.draw({300, 100}, {200, 200}, {0.3f, 0.5f, 0.6f, 0.0f});
 
-        render.draw({300, 100}, {200, 200}, {0.3f, 0.5f, 0.6f, 0.9f});
         render.end();
 
-        textRender.drawText("\\Рпвdgs", 300, 200, 1, {0.5f, 0.f, 0.4f}, projection);
-        textRender.drawText("Гойда", 300, 400, 1, {1.f, 1.f, 1.f}, projection);
+        textRender.drawText("\\Рпвdgs", 300, 200, 1, {0.5f, 0.f, 0.4f});
+        textRender.drawText("Гойда Братья", 300, 400, 1, {1.f, 0.6f, 1.f});
 
         window.swapBuffers();
         eventSystem.update();

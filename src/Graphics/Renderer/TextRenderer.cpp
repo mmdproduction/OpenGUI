@@ -37,7 +37,8 @@ std::u32string TextRenderer::charToUnicode(const std::string& text) {
     return unicode;
 }
 
-TextRenderer::TextRenderer(const GLchar* vertexPath, const GLchar* fragmentPath): shader(vertexPath, fragmentPath) {
+TextRenderer::TextRenderer(uint16_t width, uint16_t height, const GLchar* vertexPath, const GLchar* fragmentPath): shader(vertexPath, fragmentPath) {
+    projection = glm::ortho(0.0f, float(width), 0.0f, float(height));
 }
 
 TextRenderer::~TextRenderer(){
@@ -89,7 +90,7 @@ bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
             texture,
             glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
+            GLuint(face->glyph->advance.x)
         };
 
         characters.insert(std::pair<GLuint, Character>(c, character));
@@ -116,7 +117,7 @@ bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
             texture,
             glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
+            GLuint(face->glyph->advance.x)
         };
 
         characters.insert(std::pair<GLuint, Character>(c, character));
@@ -141,7 +142,7 @@ bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
 
 }
 
-void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color, glm::mat4 projection){
+void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color){
     shader.use();
     glUniform3f(glGetUniformLocation(shader.getId(), "textColor"), color.x, color.y, color.z);
     shader.setUniformMatrix4("projection", projection);
@@ -182,9 +183,9 @@ void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GL
 
 }
 
-void TextRenderer::drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, glm::mat4 projection) {
+void TextRenderer::drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     std::u32string utf32 = charToUnicode(text);
-    drawText(utf32, x, y, scale, color, projection);
+    drawText(utf32, x, y, scale, color);
 }
 
 
