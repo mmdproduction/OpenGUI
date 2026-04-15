@@ -22,7 +22,9 @@ add_subdirectory(libs/glew-2.3.1/build/cmake)
 
 add_executable(test main.cpp ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp
 ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/Renderer.cpp
- ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/TextRenderer.cpp)
+ ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/TextRenderer.cpp
+  ${GRAPHICS}UI/UI.cpp
+ )
 target_link_libraries(test
     PUBLIC
     glfw
@@ -38,5 +40,6 @@ target_include_directories(test PUBLIC
      ${CMAKE_CURRENT_SOURCE_DIR}/libs/glew-2.3.1/include
      ${GRAPHICS}Renderer/
      ${GRAPHICS}ShaderLoader/
+     ${GRAPHICS}UI/
      ${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype/include
      )

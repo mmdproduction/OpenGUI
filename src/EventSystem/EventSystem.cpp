@@ -44,6 +44,18 @@ void EventSystem::mouseButtonCallback(GLFWwindow* window, int button, int action
     } 
 }
 
+void EventSystem::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos){
+    int height;
+    glfwGetWindowSize(window, nullptr, &height);
+    instance->mouseX = xpos;
+    instance->mouseY = height - ypos;
+    std::cout << instance->getMouseX() << " " << instance->getMouseY() << std::endl;
+}
+
+void EventSystem::setCursorPosCallback(GLFWwindow* window){
+    glfwSetCursorPosCallback(window, cursorPositionCallback);
+}
+
 void EventSystem::setMouseButtonCallback(GLFWwindow* window){
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
 }

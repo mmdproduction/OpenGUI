@@ -1,7 +1,7 @@
 #include"Renderer.hpp"
 
 Renderer::Renderer(uint16_t width, uint16_t height, const GLchar* vertexPath, const GLchar* fragmentPath): shader(vertexPath, fragmentPath){
-    projectionMatrics = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
+    projectionMatrics = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
     indices = {
         0, 1, 2, 2, 3, 0
     };
@@ -43,7 +43,7 @@ void Renderer::end(){
 }
 
 void Renderer::draw(glm::vec2 pos, glm::vec2 size, glm::vec4 color){
-    if(vertices.size() <= vertexBufferMax){
+    if(vertices.size() +4 > vertexBufferMax){
         flush();
         vertices.clear();
     }
@@ -77,3 +77,4 @@ void Renderer::flush(){
 void Renderer::resize(uint16_t newWidth, uint16_t newHeight){
     projectionMatrics = glm::ortho(0.0f, (float)newWidth, (float)newHeight, 0.0f, -1.0f, 1.0f);
 }
+

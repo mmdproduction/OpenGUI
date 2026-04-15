@@ -8,6 +8,7 @@
 #include"EventSystem.hpp"
 #include"Renderer.hpp"
 #include"TextRenderer.hpp"
+#include"UI.hpp"
 
 int main(void)
 {
@@ -21,34 +22,41 @@ int main(void)
 
     if(glewInit()) return -1;
     Renderer render = Renderer(window.getWidth(), window.getHeight(), "shaders/vert.glsl", "shaders/frag.glsl");
-
     TextRenderer textRender = TextRenderer(window.getWidth(), window.getHeight(), "shaders/text_vert.glsl", "shaders/text_frag.glsl");
+
     if(!textRender.loadFont("C:/Windows/Fonts/arial.ttf", 64)){
         std::cerr << "ERROR::FONT::BUILD_FAIL";
     }
+
     eventSystem.setKeyCallback(window.getWindow());
     eventSystem.setMouseButtonCallback(window.getWindow());
+    eventSystem.setCursorPosCallback(window.getWindow());
+
+    UIButton testButton = UIButton(200, 250, 200, 100, {0.5f, 0.6f, 0.8f, 1.f}, "кнопка", {1, 1, 1});
     while (!window.isWindowShouldClose())
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        if(eventSystem.isButtonUp(GLFW_MOUSE_BUTTON_LEFT)){
-             window.setWindowShouldClose(true);
-        }
+        testButton.onEvent(eventSystem);
+        // if(eventSystem.isButtonUp(GLFW_MOUSE_BUTTON_LEFT)){
+        //      window.setWindowShouldClose(true);
+        // }
         if(window.isResize){
             render.resize(window.getWidth(), window.getHeight());
         }
         render.begin();
-        
-        render.draw({300, 100}, {200, 200}, {0.3f, 0.5f, 0.6f, 0.0f});
-
+        textRender.begin();
+        testButton.draw(render, textRender);
         render.end();
+        textRender.end();
 
-        textRender.drawText("\\Рпвdgs", 300, 200, 1, {0.5f, 0.f, 0.4f});
-        textRender.drawText("Гойда Братья", 300, 400, 1, {1.f, 0.6f, 1.f});
+       
+
+        
 
         window.swapBuffers();
         eventSystem.update();
+        testButton.update();
     }
 
     glfwTerminate();

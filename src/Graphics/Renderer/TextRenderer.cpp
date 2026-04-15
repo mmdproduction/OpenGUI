@@ -142,13 +142,12 @@ bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
 
 }
 
-void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color){
-    shader.use();
-    glUniform3f(glGetUniformLocation(shader.getId(), "textColor"), color.x, color.y, color.z);
-    shader.setUniformMatrix4("projection", projection);
+void TextRenderer::begin(){
+    vecVertices.clear();
+}
 
-    glBindVertexArray(VAO);
-    
+void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 textColor){
+    color = textColor;
     for (char32_t c : text) {
         auto it = characters.find(static_cast<GLuint>(c));
         if (it == characters.end()) continue;
@@ -161,22 +160,46 @@ void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GL
         GLfloat w = ch.size.x * scale;
         GLfloat h = ch.size.y * scale;
         
-        GLfloat vertices[6][4] = {
+        RenderInfo item;
+        item.textureID = ch.textureID;
+        
+        GLfloat verts[6][4] = {
             { xpos,     ypos + h,   0.0, 0.0 },
             { xpos,     ypos,       0.0, 1.0 },
             { xpos + w, ypos,       1.0, 1.0 },
+            
             { xpos,     ypos + h,   0.0, 0.0 },
             { xpos + w, ypos,       1.0, 1.0 },
             { xpos + w, ypos + h,   1.0, 0.0 }
         };
+
+        memcpy(item.vertices, verts, sizeof(verts));
         
-        glBindTexture(GL_TEXTURE_2D, ch.textureID);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        
+        vecVertices.push_back(item);
         x += (ch.advance >> 6) * scale;
     }
+    
+
+}
+
+void TextRenderer::textFlush(){
+    shader.use();
+    glUniform3f(glGetUniformLocation(shader.getId(), "textColor"), color.x, color.y, color.z);
+    shader.setUniformMatrix4("projection", projection);
+
+    glBindVertexArray(VAO);
+    
+    for(const auto& item: vecVertices){
+    
+        
+        glBindTexture(GL_TEXTURE_2D, item.textureID);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(item.vertices), item.vertices);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        
+       
+    }
+    
     
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -186,6 +209,10 @@ void TextRenderer::drawText(const std::u32string& text, GLfloat x, GLfloat y, GL
 void TextRenderer::drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color) {
     std::u32string utf32 = charToUnicode(text);
     drawText(utf32, x, y, scale, color);
+}
+
+void TextRenderer::end(){
+    textFlush();
 }
 
 
