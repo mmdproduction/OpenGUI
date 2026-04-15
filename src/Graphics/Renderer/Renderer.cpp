@@ -75,6 +75,6 @@ void Renderer::flush(){
 }
 
 void Renderer::resize(uint16_t newWidth, uint16_t newHeight){
-    projectionMatrics = glm::ortho(0.0f, (float)newWidth, (float)newHeight, 0.0f, -1.0f, 1.0f);
+    projectionMatrics = glm::ortho(0.0f, (float)newWidth, 0.0f,  (float)newHeight);
 }
 
