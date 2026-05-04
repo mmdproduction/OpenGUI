@@ -20,12 +20,12 @@ add_subdirectory(libs/glm)
 add_subdirectory(libs/freetype)
 add_subdirectory(libs/glew-2.3.1/build/cmake)
 
-add_executable(test main.cpp ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp
+add_library(OpenGUI STATIC ${SRC}Window/Window.cpp ${SRC}EventSystem/EventSystem.cpp
 ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/Renderer.cpp
  ${GRAPHICS}ShaderLoader/ShaderLoader.cpp ${GRAPHICS}Renderer/TextRenderer.cpp
   ${GRAPHICS}UI/UI.cpp
  )
-target_link_libraries(test
+target_link_libraries(OpenGUI
     PUBLIC
     glfw
     glm::glm
@@ -34,7 +34,7 @@ target_link_libraries(test
     freetype
 )
 
-target_include_directories(test PUBLIC
+target_include_directories(OpenGUI PUBLIC
      ${SRC}Window/
      ${SRC}EventSystem/
      ${CMAKE_CURRENT_SOURCE_DIR}/libs/glew-2.3.1/include
