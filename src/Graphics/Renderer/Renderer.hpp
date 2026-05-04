@@ -22,7 +22,7 @@ class Renderer{
 
     Shader shader;
 
-    void flush();
+    
 
     public:
 
@@ -33,6 +33,7 @@ class Renderer{
     void end();
 
     void draw(glm::vec2 pos, glm::vec2 size, glm::vec4 color);
+    void flush();
 
     void resize(uint16_t newWidth, uint16_t newHeight);
 

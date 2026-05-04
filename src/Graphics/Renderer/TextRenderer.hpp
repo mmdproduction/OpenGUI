@@ -16,7 +16,7 @@ struct Character{
     GLuint advance;
 };
 
-/// @brief Баг с цветом текста (передавать сразу в вершинный шейдер)
+//FIXME Баг с цветом текста (передавать сразу в вершинный шейдер)
 class TextRenderer{
     private:
     GLuint VAO = 0,
@@ -31,16 +31,28 @@ class TextRenderer{
     glm::mat4 projection;
     glm::vec3 color;
 
-    static std::u32string charToUnicode(const std::string& utf8);
-    void drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color);
-    void textFlush();
+    float lineHeight = 0.0f;
+    float ascent = 0.0f; 
+    GLuint fontSize = 0;
     public:
 
     TextRenderer(uint16_t width, uint16_t height, const GLchar* vertexPath, const GLchar* fragmentPath);
     ~TextRenderer();
 
+    static std::u32string charToUnicode(const std::string& utf8);
     bool loadFont(const std::string& fontPath, GLuint fontSize);
     void begin();
+
     void drawText(const std::string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color);
+    void drawText(const std::u32string& text, GLfloat x, GLfloat y, GLfloat scale , glm::vec3 color);
+    
+    void textFlush();
     void end();
+
+    float getTextWidth(const std::string& text) const;
+    float getTextWidth(const std::u32string& text) const;
+
+    float getLineHeight() const { return lineHeight; }
+    float getAscent() const { return ascent; }
+    GLuint getFontSize() const {return fontSize; }
 };
