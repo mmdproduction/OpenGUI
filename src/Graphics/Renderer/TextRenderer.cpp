@@ -50,6 +50,7 @@ TextRenderer::~TextRenderer(){
 }
 
 bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
+    this->fontSize = fontSize;
     FT_Library ft;
     if (FT_Init_FreeType(&ft)) {
         std::cerr << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -64,6 +65,11 @@ bool TextRenderer::loadFont(const std::string& fontPath, GLuint fontSize){
     }
 
     FT_Set_Pixel_Sizes(face, 0, fontSize);
+
+    
+    ascent = face->size->metrics.ascender / 64.0f;
+    lineHeight = (face->size->metrics.ascender - face->size->metrics.descender + face->size->metrics.height) / 64.0f;
+
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     for (GLubyte c = 0; c < 128; c++) {
@@ -200,6 +206,7 @@ void TextRenderer::textFlush(){
        
     }
     
+    vecVertices.clear();
     
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -216,3 +223,26 @@ void TextRenderer::end(){
 }
 
 
+
+float TextRenderer::getTextWidth(const std::string& text) const {
+    std::u32string utf32 = charToUnicode(text);
+    float width = 0.0f;
+    
+    for (char32_t c : utf32) {
+        auto it = characters.find(static_cast<GLuint>(c));
+        if (it == characters.end()) continue;
+        width += (it->second.advance >> 6);
+    }
+    return width;
+}
+
+float TextRenderer::getTextWidth(const std::u32string& text) const {
+    float width = 0.0f;
+    
+    for (char32_t c : text) {
+        auto it = characters.find(static_cast<GLuint>(c));
+        if (it == characters.end()) continue;
+        width += (it->second.advance >> 6);
+    }
+    return width;
+}
