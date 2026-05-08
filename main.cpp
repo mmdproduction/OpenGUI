@@ -14,7 +14,6 @@ int main(void)
 {
     if (!Window::windowInit()) return -1;
     
-    glm::mat4 projection = glm::ortho(0.0f, 1000.0f, 0.0f, 800.0f);
     Window window = Window(1000, 800, "Test");
     EventSystem eventSystem;
 

@@ -2,9 +2,6 @@
 
 Renderer::Renderer(uint16_t width, uint16_t height, const GLchar* vertexPath, const GLchar* fragmentPath): shader(vertexPath, fragmentPath){
     projectionMatrics = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
-    indices = {
-        0, 1, 2, 2, 3, 0
-    };
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -43,10 +40,13 @@ void Renderer::end(){
 }
 
 void Renderer::draw(glm::vec2 pos, glm::vec2 size, glm::vec4 color){
-    if(vertices.size() +4 > vertexBufferMax){
+    if(vertices.size() + 4 >= vertexBufferMax){
         flush();
         vertices.clear();
+        indices.clear();
     }
+
+    uint32_t base = vertices.size();
 
     float x = pos.x;
     float y = pos.y;
@@ -57,6 +57,13 @@ void Renderer::draw(glm::vec2 pos, glm::vec2 size, glm::vec4 color){
     vertices.push_back({{x + w, y}, color});    
     vertices.push_back({{x + w, y + h}, color}); 
     vertices.push_back({{x, y + h}, color});    
+
+    indices.push_back(base + 0);
+    indices.push_back(base + 1);
+    indices.push_back(base + 2);
+    indices.push_back(base + 2);
+    indices.push_back(base + 3);
+    indices.push_back(base + 0);
     
 }
 
@@ -71,7 +78,15 @@ void Renderer::flush(){
    
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(GUIVertex), vertices.data());
-    glDrawElements(GL_TRIANGLES, (vertices.size() / 4) * 6, GL_UNSIGNED_INT, 0);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_DYNAMIC_DRAW);
+
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+    vertices.clear();
+    indices.clear();
+    
 }
 
 void Renderer::resize(uint16_t newWidth, uint16_t newHeight){
