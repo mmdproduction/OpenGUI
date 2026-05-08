@@ -47,7 +47,7 @@ class UIButton : protected UIWidget {
     glm::vec4 backgroundColor;
     glm::vec3 textColor;
     std::function<void(int)> onClicked;
-    bool isClicked = false;
+    
 
     public:
     UIButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, glm::vec4 backColor, const std::string& text, glm::vec3 textColor);
@@ -60,6 +60,7 @@ class UIButton : protected UIWidget {
 
     bool isHovered;
     bool isPressed;
+    bool isClicked;
 };
 
 class UIText: protected UIWidget{
