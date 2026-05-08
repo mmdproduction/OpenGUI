@@ -31,6 +31,14 @@ void EventSystem::keyCallback(GLFWwindow* window, int keycode, int scancode, int
     }
 
 }
+
+void EventSystem::charCallback(GLFWwindow* window, unsigned int codepoint){
+    instance->typed_char.push_back(codepoint);
+}
+
+void EventSystem::scrollCallback(GLFWwindow* window, double xoffset, double yoffset){
+    instance->scrollY = yoffset;
+}
 void EventSystem::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods){
     if(instance && button < MAX_NUM_OF_MOUSE_BUTTONS && button >= 0){
         switch (action)
@@ -49,7 +57,7 @@ void EventSystem::cursorPositionCallback(GLFWwindow* window, double xpos, double
     glfwGetWindowSize(window, nullptr, &height);
     instance->mouseX = xpos;
     instance->mouseY = height - ypos;
-    std::cout << instance->getMouseX() << " " << instance->getMouseY() << std::endl;
+    
 }
 
 void EventSystem::setCursorPosCallback(GLFWwindow* window){
@@ -64,10 +72,20 @@ void EventSystem::setKeyCallback(GLFWwindow* window){
     glfwSetKeyCallback(window, keyCallback);
 }
 
+void EventSystem::setCharCallback(GLFWwindow* window){
+    glfwSetCharCallback(window, charCallback);
+}
+
+void EventSystem::setScrollCallback(GLFWwindow* window){
+    glfwSetScrollCallback(window, scrollCallback);
+}
+
 void EventSystem::update(){
     for(uint16_t i = 0; i < NUM_OF_ALL_CODES; ++i){
         _last_keys[i] = _keys[i];
     }
+    clearTypedChar();
+    resetScrollY();
     glfwPollEvents();
 }
 
