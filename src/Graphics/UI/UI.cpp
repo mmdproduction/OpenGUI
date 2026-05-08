@@ -27,7 +27,6 @@ bool UIButton::onEvent(EventSystem& events){
     if(!isVisible || !isEnable) return false;
     if(contains(events.getMouseX(), events.getMouseY()) && events.isButtonDown(GLFW_MOUSE_BUTTON_LEFT)){
         isPressed = true;
-        isClicked = true;
         return true;
     }
     else if (contains(events.getMouseX(), events.getMouseY())){ 
@@ -44,7 +43,6 @@ void UIButton::setOnClicked(std::function<void(int)> callback){
 void UIButton::update(float){
     isPressed = false;
     isHovered = false;
-    isClicked = false;
 }
 
 void UIText::draw(Renderer& r, TextRenderer& tr) {

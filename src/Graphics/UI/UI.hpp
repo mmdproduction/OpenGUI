@@ -60,7 +60,6 @@ class UIButton : protected UIWidget {
 
     bool isHovered;
     bool isPressed;
-    bool isClicked;
 };
 
 class UIText: protected UIWidget{
