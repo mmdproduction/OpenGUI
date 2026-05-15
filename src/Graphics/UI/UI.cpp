@@ -25,7 +25,7 @@ void UIButton::draw(Renderer& render, TextRenderer& textRender){
 
 bool UIButton::onEvent(EventSystem& events){
     if(!isVisible || !isEnable) return false;
-    if(contains(events.getMouseX(), events.getMouseY()) && events.isButtonDown(GLFW_MOUSE_BUTTON_LEFT)){
+    if(contains(events.getMouseX(), events.getMouseY()) && events.isButtonClicked(GLFW_MOUSE_BUTTON_LEFT)){
         isPressed = true;
         return true;
     }
