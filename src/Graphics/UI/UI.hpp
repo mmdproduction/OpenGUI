@@ -57,6 +57,7 @@ class UIButton : protected UIWidget {
     void update(float) override;
 
     void setOnClicked(std::function<void(int)> callback);
+    void setText(const std::string& t) { text = t; }
 
     bool isHovered;
     bool isPressed;
